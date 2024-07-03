@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Zapatillas</title>
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        li {
+            text-align: center;
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            width: 280px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            transition: transform 0.2s, box-shadow 0.3s;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        li:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 10px;
+        }
+
+        .button-container {
+            margin-top: 10px;
+        }
+
+        .button-container form {
+            display: inline-block;
+        }
+
+        .button-container a, .button-container button {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #2196F3;
+            color: #fff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button-container a:hover, .button-container button:hover {
+            background-color: #1976D2;
+        }
+
+        .cart-button {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Zapatillas</h1>
+        <ul>
+            {% for zapatilla in zapatillas %}
+                <li>
+                    <img src="{{ zapatilla.imagen.url }}" alt="{{ zapatilla.nombre }}">
+                    <div class="button-container">
+                        <h3>{{ zapatilla.nombre }}</h3>
+                        <a href="{% url 'detalle_zapatilla' zapatilla.id %}">Ver Detalles</a>
+                        <form method="post" action="{% url 'agregar_al_carrito' zapatilla.id %}">
+                            {% csrf_token %}
+                            <button type="submit">Agregar al Carrito</button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
