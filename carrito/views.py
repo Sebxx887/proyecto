@@ -1,20 +1,24 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from carrito.carrito import Carrito 
+from .models import Carrito
 from productos.models import Zapatilla
 
-def ver_carrito(request):
-    carrito = Carrito(request)
-    return render(request, 'carrito/ver_carrito.html', {'carrito': carrito})
-
+@login_required(login_url='usuarios:login')
 def agregar_al_carrito(request, zapatilla_id):
-    carrito = Carrito(request)
     zapatilla = get_object_or_404(Zapatilla, id=zapatilla_id)
-    carrito.add(zapatilla=zapatilla)
-    return redirect('ver_carrito', id=zapatilla.id)
+    carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
+    carrito.zapatillas.add(zapatilla)
+    return redirect('carrito:ver_carrito')
 
+@login_required(login_url='usuarios:login')
+def ver_carrito(request):
+    carrito, creado = Carrito.objects.get_or_create(usuario=request.user)
+    contexto = {'carrito': carrito}
+    return render(request, 'carrito/ver_carrito.html', contexto)
+
+@login_required(login_url='usuarios:login')
 def eliminar_del_carrito(request, zapatilla_id):
-    carrito = Carrito(request)
     zapatilla = get_object_or_404(Zapatilla, id=zapatilla_id)
-    carrito.remove(zapatilla=zapatilla)
-    return redirect('ver_carrito')
+    carrito = Carrito.objects.get(usuario=request.user)
+    carrito.zapatillas.remove(zapatilla)
+    return redirect('carrito:ver_carrito')

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,8 +29,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_REDIRECT_URL = 'lista_zapatillas'  # Ajusta esto según tu vista principal
-LOGOUT_REDIRECT_URL = 'login'
+LOGIN_URL = 'usuarios:login'
+LOGIN_REDIRECT_URL = 'productos:lista_zapatillas'
+LOGOUT_REDIRECT_URL = 'productos:lista_zapatillas'
 
 
 
@@ -66,10 +69,12 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'carrito.context_processors.importe_total_carrito',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
@@ -113,7 +118,10 @@ USE_TZ = True
 
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

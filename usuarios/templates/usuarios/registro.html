@@ -1,119 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Registro/Iniciar Sesión</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0; /* Fondo más suave */
-            margin: 0;
-            padding: 0;
+            background: white;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            animation: fadeIn ease 0.5s; /* Animación de entrada */
+            margin: 0;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         }
-
         .container {
-            background-color: #ffffff; /* Fondo blanco */
+            background-color: white;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            animation: slideIn ease 0.5s; /* Animación de entrada */
-        }
-
-        h1 {
+            border-radius: 10px;
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.1);
+            width: 300px;
             text-align: center;
-            color: #333;
-            margin-bottom: 20px; /* Espacio adicional abajo del título */
         }
-
-        form {
-            display: flex;
-            flex-direction: column;
+        h2 {
+            color: #4e54c8;
+            margin-bottom: 20px;
         }
-
-        label {
-            font-weight: bold;
-            margin-top: 10px;
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
         }
-
-        input {
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            color: #666;
-            font-size: 12px;
-        }
-
-        li {
+        .form-group label {
+            display: block;
             margin-bottom: 5px;
+            color: #333;
         }
-
-        button {
+        .form-group input {
+            width: 100%;
             padding: 10px;
-            background-color: #2196F3; /* Color celeste */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .button {
+            background-color: #2196F3;
             color: white;
+            padding: 10px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px;
-            transition: background-color 0.3s ease; /* Transición suave de color al pasar el mouse */
+            transition: background-color 0.9s;
         }
-
-        button:hover {
-            background-color: #0b7dda; /* Cambio de color al pasar el mouse */
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .button:hover {
+            background-color: #4248b3;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Login</h1>
-        <form method="post">
+        <h2>Iniciar Sesión</h2>
+        <form method="post" action="{% url 'usuarios:login' %}">
             {% csrf_token %}
-            <label for="id_username">{{ form.username.label }}</label>
-            {{ form.username }}<br>
-            <label for="id_password1">{{ form.password1.label }}</label>
-            {{ form.password1 }}<br>
-            <a href="{% url 'lista_zapatillas' %}">
-                <button type="button">Registrarse</button>
-            </a>
+            {{ form.as_p }}
+            <button type="submit" class="button">Iniciar Sesión</button>
+        </form>
+        <hr>
+        <h2>Registrarse</h2>
+        <form method="post" action="{% url 'usuarios:registro' %}">
+            {% csrf_token %}
+            {{ form_registro.as_p }}
+            <button type="submit" class="button">Registrarse</button>
         </form>
     </div>
 </body>
